@@ -221,6 +221,9 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 }
 ```
 
+### Results
+
+
 ### Credits
 - To MrMicky for creating FastBoard, because originally this is a fork of it.
 - To me of course for spending 3 days on this awesome library
