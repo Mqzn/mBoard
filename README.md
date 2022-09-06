@@ -165,11 +165,9 @@ public final class TestAdapter implements BoardAdapter {
 
 	@Override
 	public @NonNull Title title(Player player) {
-		return Title.builder()
-						.withText("&4&lmBoard")
-						.withAnimation(titleAnimation)
-						.build();
-
+		return Title.builder().withText("&4&lmBoard")
+				      .withAnimation(titleAnimation)
+				      .build();
 	}
 
 	@Override
