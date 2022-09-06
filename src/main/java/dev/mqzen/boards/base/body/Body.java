@@ -4,12 +4,14 @@ import dev.mqzen.boards.base.Title;
 import dev.mqzen.boards.base.animation.core.Animation;
 import dev.mqzen.boards.base.body.lines.Line;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Does the same as it's name...
@@ -48,9 +50,8 @@ public class Body implements Iterable<Line> {
 	public static Body of(String... lines) {
 
 		Body body = empty();
-		for (int i = 0; i < lines.length; i++) {
-			String content = lines[i];
-			body.addLine(Line.of(content, i));
+		for (String line : lines) {
+			body.addNewLine(ChatColor.translateAlternateColorCodes('&', line));
 		}
 
 		return body;

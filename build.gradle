@@ -32,6 +32,7 @@ dependencies {
 }
 
 shadowJar{
+    setArchiveName("mBoard-$version" + ".jar")
     relocate 'org.checkerframework', 'dev.mqzen.boards.annotations'
 }
 

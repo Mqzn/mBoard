@@ -1,7 +1,6 @@
 package dev.mqzen.boards.example;
 
 import dev.mqzen.boards.base.BoardAdapter;
-import dev.mqzen.boards.base.BoardUpdate;
 import dev.mqzen.boards.base.Title;
 import dev.mqzen.boards.base.animation.core.Animation;
 import dev.mqzen.boards.base.body.Body;
@@ -55,9 +54,10 @@ public final class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("&6&lWelcome &e&l" + player.getName())
+						.withText("&4&lmBoard")
 						.withAnimation(titleAnimation)
 						.build();
+
 	}
 
 	@Override
@@ -71,13 +71,6 @@ public final class TestAdapter implements BoardAdapter {
 		return body;
 	}
 
-	@Override
-	public @NonNull BoardUpdate getBoardUpdate() {
-		return (board) -> {
-			board.updateTitle();
-			board.updateBody();
-		};
-	}
 }
 
 

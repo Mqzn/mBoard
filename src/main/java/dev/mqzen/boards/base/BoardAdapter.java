@@ -43,7 +43,10 @@ public interface BoardAdapter {
 	 * @return the actions to be executed as an update to the board
 	 */
 	@Nullable default BoardUpdate getBoardUpdate() {
-		return null;
+		return (board)-> {
+			board.updateTitle();
+			board.updateLines();
+		};
 	}
 
 }

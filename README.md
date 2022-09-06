@@ -120,7 +120,7 @@ Such as e.g: Title or Lines
 #### Creating your adapter
 ```java
 public final class TestAdapter implements BoardAdapter {
-	private final @NonNull Animation<String> titleAnimation = new Animation<>("&4&lmBoard",
+	Animation<String> titleAnimation = new Animation<>("&4&lmBoard",
 					"&4&lmBoard",
 					"&c&lm&4&lBoard",
 					"&4&lm&c&lB&4&loard",
@@ -130,7 +130,7 @@ public final class TestAdapter implements BoardAdapter {
 					"&4&lmBoar&c&ld"
 	);
 
-	private final @NonNull Animation<String> yourWebsite = new Animation<>("      &eYourWebsite.com      ",
+	Animation<String> yourWebsite = new Animation<>("      &eYourWebsite.com      ",
 					"     &eYourWebsite.com ",
 					"    &eYourWebsite.com",
 					"   &eYourWebsite.com",
@@ -166,9 +166,10 @@ public final class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("&6&lWelcome &e&l" + player.getName())
+						.withText("&4&lmBoard")
 						.withAnimation(titleAnimation)
 						.build();
+
 	}
 
 	@Override
@@ -182,13 +183,6 @@ public final class TestAdapter implements BoardAdapter {
 		return body;
 	}
 
-	@Override
-	public @NonNull BoardUpdate getBoardUpdate() {
-		return (board) -> {
-			board.updateTitle();
-			board.updateBody();
-		};
-	}
 }
 ```
 

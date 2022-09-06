@@ -17,7 +17,7 @@ public final class Line {
 
 	public static int MAX_LINES = 15;
 
-	private final @NonNull @Getter String content;
+	private final @NonNull String content;
 	private final @Getter int index;
 
 	private @Nullable @Getter Animation<String> animation;
@@ -25,8 +25,12 @@ public final class Line {
 		if(index > MAX_LINES) {
 			throw new IllegalArgumentException("line's index is greater than 15");
 		}
-		this.content = ChatColor.translateAlternateColorCodes('&', content);
+		this.content = content;
 		this.index = index;
+	}
+
+	public String getContent() {
+		return animation != null ? animation.fetchNextChange() : content;
 	}
 
 
@@ -79,5 +83,9 @@ public final class Line {
 		return animation != null;
 	}
 
+
+	public boolean isEmpty() {
+		return content.isEmpty();
+	}
 
 }

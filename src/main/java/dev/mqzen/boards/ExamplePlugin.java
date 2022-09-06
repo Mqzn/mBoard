@@ -1,12 +1,17 @@
 package dev.mqzen.boards;
 
+import dev.mqzen.boards.base.BoardAdapter;
+import dev.mqzen.boards.base.Title;
+import dev.mqzen.boards.base.body.Body;
 import dev.mqzen.boards.example.TestAdapter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class ExamplePlugin extends JavaPlugin implements Listener {
 
