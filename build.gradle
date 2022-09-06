@@ -1,19 +1,39 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'dev.mqzen.board'
 version '1.0-SNAPSHOT'
 
+
 repositories {
     mavenCentral()
+    mavenLocal()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url  'https://oss.sonatype.org/content/repositories/central' }
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
+    maven { url "https://jitpack.io" }
+
+
+    gradlePluginPortal()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    implementation 'org.checkerframework:checker-qual:3.25.0'
+    compileOnly('org.projectlombok:lombok:1.18.24')
+    annotationProcessor('org.projectlombok:lombok:1.18.24')
+
 }
 
-test {
-    useJUnitPlatform()
+shadowJar{
+    relocate 'org.checkerframework', 'dev.mqzen.boards.annotations'
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
