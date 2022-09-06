@@ -83,7 +83,6 @@ public interface Title {
 
 		public Builder withText(String text) {
 			this.text = ChatColor.translateAlternateColorCodes('&', text);
-			System.out.println("TITLE TEXT LENGTH: " + this.text.length());
 			if(this.text.length() > 32) {
 				this.text = text.substring(0, 32);
 			}
