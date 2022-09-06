@@ -133,7 +133,7 @@ public final class BoardManager {
 	 * @see BoardManager#setUpdateInterval(long)
 	 */
 	public void startBoardUpdaters() {
-		updateTaskId = Bukkit.getScheduler().runTaskTimer(plugin, ()-> {
+		updateTaskId = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, ()-> {
 			for(MBoard board : boards.values()) {
 				if(board.isDeleted())continue;
 				BoardUpdate update = board.getUpdate();
