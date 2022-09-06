@@ -1,6 +1,6 @@
 package dev.mqzen.boards.base;
 
-import dev.mqzen.boards.base.body.Body;
+import dev.mqzen.boards.body.Body;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;

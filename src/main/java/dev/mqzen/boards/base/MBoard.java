@@ -1,9 +1,8 @@
 package dev.mqzen.boards.base;
 
-import dev.mqzen.boards.base.animation.core.Animation;
-import dev.mqzen.boards.base.body.Body;
-import dev.mqzen.boards.base.body.lines.Line;
-import javafx.scene.transform.Translate;
+import dev.mqzen.boards.util.FastReflection;
+import dev.mqzen.boards.body.Body;
+import dev.mqzen.boards.body.Line;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -21,7 +20,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TransferQueue;
 
 public class MBoard {
 

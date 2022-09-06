@@ -1,6 +1,6 @@
 package dev.mqzen.boards.base;
 
-import dev.mqzen.boards.base.animation.core.Animation;
+import dev.mqzen.boards.animation.core.Animation;
 import lombok.Data;
 import lombok.Setter;
 import org.bukkit.ChatColor;

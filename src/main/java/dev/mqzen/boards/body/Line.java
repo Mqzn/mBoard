@@ -1,8 +1,7 @@
-package dev.mqzen.boards.base.body.lines;
+package dev.mqzen.boards.body;
 
-import dev.mqzen.boards.base.animation.core.Animation;
+import dev.mqzen.boards.animation.core.Animation;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 

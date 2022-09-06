@@ -1,4 +1,4 @@
-package dev.mqzen.boards.base.animation;
+package dev.mqzen.boards.animation;
 
 import org.bukkit.ChatColor;
 

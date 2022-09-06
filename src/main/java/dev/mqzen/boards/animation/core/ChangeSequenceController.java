@@ -1,4 +1,4 @@
-package dev.mqzen.boards.base.animation.core;
+package dev.mqzen.boards.animation.core;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 

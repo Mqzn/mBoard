@@ -1,8 +1,7 @@
-package dev.mqzen.boards.base.body;
+package dev.mqzen.boards.body;
 
 import dev.mqzen.boards.base.Title;
-import dev.mqzen.boards.base.animation.core.Animation;
-import dev.mqzen.boards.base.body.lines.Line;
+import dev.mqzen.boards.animation.core.Animation;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -11,7 +10,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TransferQueue;
 
 /**
  * Does the same as it's name...

@@ -1,4 +1,4 @@
-package dev.mqzen.boards.base;
+package dev.mqzen.boards.util;
 
 import org.bukkit.Bukkit;
 
@@ -83,7 +83,7 @@ public final class FastReflection {
         }
     }
 
-    static Class<?> innerClass(Class<?> parentClass, Predicate<Class<?>> classPredicate) throws ClassNotFoundException {
+    public static Class<?> innerClass(Class<?> parentClass, Predicate<Class<?>> classPredicate) throws ClassNotFoundException {
         for (Class<?> innerClass : parentClass.getDeclaredClasses()) {
             if (classPredicate.test(innerClass)) {
                 return innerClass;
@@ -117,6 +117,7 @@ public final class FastReflection {
     }
 
     @FunctionalInterface
+    public
     interface PacketConstructor {
         Object invoke() throws Throwable;
     }

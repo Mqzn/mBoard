@@ -1,7 +1,7 @@
-package dev.mqzen.boards.base.animation;
+package dev.mqzen.boards.animation;
 
-import dev.mqzen.boards.base.animation.core.Animation;
-import dev.mqzen.boards.base.animation.core.ChangesSequence;
+import dev.mqzen.boards.animation.core.Animation;
+import dev.mqzen.boards.animation.core.ChangesSequence;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Deprecated
