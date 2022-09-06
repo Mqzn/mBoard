@@ -1,27 +1,27 @@
 package dev.mqzen.boards.base.animation;
 
-public final class TextAnimation extends Animation<String> {
+import dev.mqzen.boards.base.animation.core.Animation;
+import dev.mqzen.boards.base.animation.core.ChangesSequence;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-	public TextAnimation(String original, String... sequence) {
-		super(original, sequence);
+@Deprecated
+public final class ScrollAnimation extends Animation<String> {
+	private final @NonNull Scroller scroller;
+
+	public ScrollAnimation(String original, @NonNull Scroller scroller) {
+		super(original, ChangesSequence.of());
+		this.scroller = scroller;
+
 	}
 
-	public TextAnimation(String original, Scroller scroller) {
-		super(original, readSequence(scroller));
-
+	@Override
+	public String fetchNextChange() {
+		return scroller.next();
 	}
 
-	private static ChangesSequence<String> readSequence(Scroller scroller) {
-
-		ChangesSequence<String> sequence = ChangesSequence.of();
-		for (String next : scroller) {
-			System.out.println("NEXT LENGTH: " + next.length());
-			if(next.length() >= 2) {
-				sequence.add(next);
-			}
-		}
-
-		return sequence;
+	@Override
+	public String fetchPreviousChange() {
+		return scroller.next();
 	}
 
 }

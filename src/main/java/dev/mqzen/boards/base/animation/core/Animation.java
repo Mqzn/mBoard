@@ -1,7 +1,18 @@
-package dev.mqzen.boards.base.animation;
+package dev.mqzen.boards.base.animation.core;
 
 import lombok.Getter;
 
+/**
+ * A simple class that caches the sequence of an animation
+ * and the original value of the sequence
+ * in order to switch to the next phase of the animation
+ * using the class {@link ChangeSequenceController<T>}
+ *
+ * @since 1.0
+ * @author Mqzen (aka Mqzn)
+ * @param <T> the object type that's going be changed through
+ *           a sequence of changes
+ */
 public class Animation<T>  {
 	protected final @Getter T original;
 	private final ChangeSequenceController<T> controller;

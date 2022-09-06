@@ -1,8 +1,18 @@
-package dev.mqzen.boards.base.animation;
-
+package dev.mqzen.boards.base.animation.core;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ *
+ * The class that controls the sequence of changes
+ * of each phase of the animation
+ *
+ * @see Animation<T>
+ * @since 1.0
+ * @author Mqzen (aka Mqzn)
+ *
+ * @param <T> the type to be changed
+ */
 public class ChangeSequenceController<T> {
 
 	private int changeIndex = 0;

@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin implements Listener {
+public class ExamplePlugin extends JavaPlugin implements Listener {
 
 	private TestAdapter adapter;
 	@Override
@@ -19,12 +19,11 @@ public class Main extends JavaPlugin implements Listener {
 
 		BoardManager.load(this);
 		BoardManager.getInstance().setUpdateInterval(5L); //default is 2L
-		BoardManager.getInstance().startBoardUpdaters(this);
+		BoardManager.getInstance().startBoardUpdaters();
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		System.out.println("REGISTERING " + e.getPlayer().getName() + " board");
 		BoardManager.getInstance().setupNewBoard(e.getPlayer(), adapter);
 	}
 
