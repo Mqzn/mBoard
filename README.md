@@ -180,7 +180,7 @@ public class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Body getBody(Player player) {
 		Body body = Body.of("&7&l&m+----------------+");
-		body.addNewLine(HighlightingAnimation.of("Test Hello", ChatColor.GOLD, ChatColor.YELLOW));
+		body.addNewLine(HighlightingAnimation.of("Test&Hello", ChatColor.GOLD, ChatColor.YELLOW));
 		body.addNewLine("&7&l&m+-----------------+");
 		return body;
 	}
