@@ -45,7 +45,7 @@ repositories {
 <dependency>
     <groupId>com.github.Mqzn</groupId>
     <artifactId>mBoard</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 ```groovy
 
 dependencies {
-    implementation 'com.github.mqzn:mBoard:1.0'
+    implementation 'com.github.mqzn:mBoard:1.1'
 }
 ```
 
