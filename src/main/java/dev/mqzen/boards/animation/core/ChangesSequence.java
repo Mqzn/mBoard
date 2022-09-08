@@ -2,10 +2,8 @@ package dev.mqzen.boards.animation.core;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
 
 
 /**
@@ -35,11 +33,18 @@ public class ChangesSequence<T> implements Iterable<T> {
 		this.changes.addAll(Arrays.asList(changes));
 	}
 
+	ChangesSequence(Collection<T> changes) {
+		this.changes.addAll(changes);
+	}
+
 	@SafeVarargs
 	public static <T> ChangesSequence<T> of(T... changes) {
 		return new ChangesSequence<>(changes);
 	}
 
+	public static <T> ChangesSequence<T> of(Collection<T> changes) {
+		return new ChangesSequence<>(changes);
+	}
 
 	@NonNull
 	@Override
