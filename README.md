@@ -143,7 +143,7 @@ public final class TestAdapter implements BoardAdapter {
 
 ### Animations
 Animated Lines are basically dynamic lines that change every x tick
-where x is the **update interval**
+where x is the **update interval** that can be modified using `BoardManager#setUpdateInterval`
 
 #### Well known animations
 There are several types of animations and there are some common animations
