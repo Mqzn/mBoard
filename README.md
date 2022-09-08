@@ -298,9 +298,6 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 }
 ```
 
-### Results
-![](https://github.com/Mqzn/mBoard/blob/master/src/main/results/mBoard-animation-fixed.gif)
-
 ### Credits
 - To MrMicky for creating FastBoard, because originally this is a fork of it.
 - To me of course for spending 3 days on this awesome library
