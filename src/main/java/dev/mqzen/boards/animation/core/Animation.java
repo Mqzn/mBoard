@@ -35,4 +35,8 @@ public class Animation<T>  {
 		return controller.previous();
 	}
 
+	public int current() {
+		return controller.getChangeIndex();
+	}
+
 }

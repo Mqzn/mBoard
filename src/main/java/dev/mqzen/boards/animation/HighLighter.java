@@ -1,11 +1,11 @@
 package dev.mqzen.boards.animation;
 
 import org.bukkit.ChatColor;
-
+import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HighLighter {
+public final class HighLighter {
 
 	private final StringBuilder text;
 	private final String primaryColor, secondaryColor;
@@ -18,8 +18,6 @@ public class HighLighter {
 		this.text = new StringBuilder(text);
 		this.primaryColor = ChatColor.translateAlternateColorCodes('&', primaryColor);
 		this.secondaryColor = ChatColor.translateAlternateColorCodes('&', secondaryColor);
-		System.out.println("PRIMARY = " + primaryColor);
-		System.out.println("SECONDARY = " + secondaryColor);
 		this.limit = text.length();
 	}
 
@@ -48,7 +46,7 @@ public class HighLighter {
 		return builder.toString();
 	}
 
-	public List<String> getHighLighted() {
+	public @NonNull List<String> getHighLighted() {
 		return highLighted;
 	}
 

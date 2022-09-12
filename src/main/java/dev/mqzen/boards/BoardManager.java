@@ -138,7 +138,11 @@ public final class BoardManager {
 				if(board.isDeleted())continue;
 				BoardUpdate update = board.getUpdate();
 				if(update == null) continue;
-				update.update(board);
+				try {
+					update.update(board);
+				}catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}, 1L, updateInterval).getTaskId();
 	}

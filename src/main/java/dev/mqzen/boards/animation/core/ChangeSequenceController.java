@@ -1,5 +1,6 @@
 package dev.mqzen.boards.animation.core;
 
+import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -13,9 +14,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  *
  * @param <T> the type to be changed
  */
+
 public class ChangeSequenceController<T> {
 
-	private int changeIndex = 0;
+	private @Getter int changeIndex = 0;
 	private final ChangesSequence<T> sequence;
 
 	protected ChangeSequenceController(ChangesSequence<T> sequence) {

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import javax.print.attribute.Attribute;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -20,6 +21,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MBoard {
 
@@ -136,9 +138,9 @@ public class MBoard {
 
 	private final List<Line> lines = new ArrayList<>();
 	private final @NonNull @Getter BoardAdapter adapter;
-	private @NonNull Title title;
+	private final @NonNull AtomicReference<Title> title;
 
-	private final @NonNull Body body;
+	private final @NonNull AtomicReference<Body> body;
 	private boolean deleted = false;
 
 	private @Nullable @Getter @Setter BoardUpdate update;
@@ -153,8 +155,8 @@ public class MBoard {
 		this.id = "fb-" + Integer.toHexString(ThreadLocalRandom.current().nextInt());
 
 		this.adapter = adapter;
-		this.title = adapter.title(player);
-		this.body = adapter.getBody(player);
+		this.title = new AtomicReference<>(adapter.title(player));
+		this.body = new AtomicReference<>(adapter.getBody(player));
 		this.update = adapter.getBoardUpdate();
 
 		try {
@@ -164,7 +166,7 @@ public class MBoard {
 			throw new RuntimeException("Unable to create scoreboard", t);
 		}
 
-		updateTitle(title);
+		updateTitle();
 		updateLines(adapter.getBody(player).getLines());
 	}
 
@@ -174,7 +176,7 @@ public class MBoard {
 	 * @return the scoreboard title
 	 */
 	public @NonNull Title getTitle() {
-		return this.title;
+		return this.title.get();
 	}
 
 	/**
@@ -191,7 +193,7 @@ public class MBoard {
 			throw new IllegalArgumentException("Title is longer than 32 chars");
 		}
 
-		this.title = title;
+		this.title.set(title);
 
 		try {
 			sendObjectivePacket(ObjectiveMode.UPDATE);
@@ -202,7 +204,7 @@ public class MBoard {
 	}
 
 	public void updateTitle() {
-		this.updateTitle(title);
+		this.updateTitle(title.get());
 	}
 
 	/**
@@ -331,7 +333,7 @@ public class MBoard {
 	 * @throws IllegalStateException    if {@link #delete()} was call before
 	 */
 	public synchronized void updateLines() {
-		checkLineNumber(body.size(), false, true);
+		/*checkLineNumber(body.size(), false, true);
 
 		if (!VersionType.V1_13.isHigherOrEqual()) {
 			for (Line line : body) {
@@ -349,7 +351,10 @@ public class MBoard {
 
 		}catch (Throwable t) {
 			throw new RuntimeException("Unable to update scoreboard lines", t);
-		}
+		}*/
+		Body newBody = adapter.getBody(player);
+		this.body.set(body.get().copyLineContents(newBody));
+		this.updateLines(body.get().getLines());
 	}
 
 
@@ -439,7 +444,7 @@ public class MBoard {
 	}
 
 	private Line getLineByScore(int score) {
-		return getLineByScore(this.body.getLines(), score);
+		return getLineByScore(this.body.get().getLines(), score);
 	}
 
 	private Line getLineByScore(List<Line> lines, int score) {
@@ -454,11 +459,11 @@ public class MBoard {
 
 		if (mode != ObjectiveMode.REMOVE) {
 			String titleContent;
-			val animation = this.title.loadAnimation();
+			val animation = this.title.get().loadAnimation();
 			if(animation.isPresent()) {
 				titleContent = animation.get().fetchNextChange();
 			}else {
-				titleContent = title.asText(player).orElse(ChatColor.RESET.toString());
+				titleContent = title.get().asText(player).orElse(ChatColor.RESET.toString());
 			}
 
 			titleContent = ChatColor.translateAlternateColorCodes('&', titleContent);

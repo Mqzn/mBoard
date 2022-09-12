@@ -3,12 +3,11 @@ package dev.mqzen.boards.body;
 import dev.mqzen.boards.base.Title;
 import dev.mqzen.boards.animation.core.Animation;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.ChatColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -31,14 +30,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  */
 public class Body implements Iterable<Line> {
-
 	private final @Getter List<Line> lines;
 
 	private Body(Body otherBody) {
-		this.lines = new CopyOnWriteArrayList<>(otherBody.getLines());
+		lines = new CopyOnWriteArrayList<>();
+		for(Line line : otherBody) {
+			if(line.getAnimation() == null) return;
+			val animation = line.getAnimation();
+			lines.add(Line.of(line.getContent(),line.getIndex()).setAnimation(animation));
+		}
 	}
 	private Body() {
 		this.lines = new CopyOnWriteArrayList<>();
+	}
+
+	private Body(List<Line> lines) {
+		this.lines = lines;
 	}
 
 	public static Body of(Body otherBody) {
@@ -53,6 +60,10 @@ public class Body implements Iterable<Line> {
 		}
 
 		return body;
+	}
+
+	public static Body of(List<Line> lines) {
+		return new Body(lines);
 	}
 
 	public static Body empty() {
@@ -120,6 +131,39 @@ public class Body implements Iterable<Line> {
 			System.out.println("LINE #" + line.getIndex() + ": " + line.getContent());
 		}
 		System.out.println("----> Body End <----");
+	}
+
+	public void setLine(int index, Line line) {
+		if(index < 0 || index > size()) return;
+		lines.set(index,line);
+	}
+
+	public Body copyLineContents(Body newBody) {
+
+		if(this.size() != newBody.size())
+			return newBody;
+
+		int capacity = size();
+		for (int i = 0; i < capacity; i++) {
+			Line oldLine = this.getLine(i);
+			Line newLine = newBody.getLine(i);
+
+			if(oldLine == null || newLine == null)break;
+
+			Animation<String> animation = null;
+			if(!oldLine.isAnimated() && newLine.isAnimated())
+				animation = newLine.getAnimation();
+			else if(oldLine.isAnimated())
+				animation = oldLine.getAnimation();
+
+			Line result = Line.of(newLine.getContent(), i);
+			if(animation != null)
+				result.setAnimation(animation);
+
+			newBody.setLine(i, result);
+		}
+
+		return newBody;
 	}
 
 }
