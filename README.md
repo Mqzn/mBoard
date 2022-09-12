@@ -7,12 +7,12 @@ by eliminating the much work that you have to put in to
 make a normal scoreboard using the old plain bukkit's api
 
 ## Get Started
-[![](https://jitpack.io/v/Mqzn/mTime.svg)](https://jitpack.io/#Mqzn/mTime)
+[![](https://jitpack.io/v/Mqzn/mBoard.svg)](https://jitpack.io/#Mqzn/mBoard)
 
 If you're using a dependency manager software like maven or gradle
 then just follow the steps below to setup your project
 and allow it to use the power of mTime !
-otherwise, just [Download](https://github.com/Mqzn/mTime/releases/tag/1.1) the jar and add it as an artifact dependency
+otherwise, just [Download](https://github.com/Mqzn/mBoard/releases/tag/1.2) the jar and add it as an artifact dependency
 
 
 ### Step 1: Add the repository
@@ -45,7 +45,7 @@ repositories {
 <dependency>
     <groupId>com.github.Mqzn</groupId>
     <artifactId>mBoard</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 ```groovy
 
 dependencies {
-    implementation 'com.github.mqzn:mBoard:1.1'
+    implementation 'com.github.mqzn:mBoard:1.2'
 }
 ```
 
