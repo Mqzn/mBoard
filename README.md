@@ -131,11 +131,11 @@ public final class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Body getBody(Player player) {
 		return Body.of(
-						"&7&l+------------------------+",
-						"",
-						"&8> &eThis is mBoard,say Hello",
-						"", 
-                        "&7&l+------------------------+");
+				"&7&l+------------------------+",
+				"",
+				"&8> &eThis is mBoard,say Hello",
+				"", 
+                                "&7&l+------------------------+");
 	}
 
 }
@@ -163,9 +163,9 @@ public class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("Hello")
-						.withAnimation(ScrollAnimation.of("&eHello", 32/*width of the scrolling*/, 1/*the distance that's moved*/))
-						.build();
+				.withText("Hello")
+				.withAnimation(ScrollAnimation.of("&eHello", 32/*width of the scrolling*/, 1/*the distance that's moved*/))
+				.build();
 	}
 
 	/**
@@ -239,9 +239,9 @@ public class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("&4mBoard &7| &cA lib")
-						.withAnimation(titleAnimation)
-						.build();
+				.withText("&4mBoard &7| &cA lib")
+				.withAnimation(titleAnimation)
+				.build();
 	}
 
 	/**
