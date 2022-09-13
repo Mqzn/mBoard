@@ -273,11 +273,10 @@ public class TestAdapter implements BoardAdapter {
 ```java
 public class ExamplePlugin extends JavaPlugin implements Listener {
 
-	private TestAdapter adapter;
+	
 	@Override
 	public void onEnable() {
 
-		adapter = new TestAdapter();
 		Bukkit.getPluginManager().registerEvents(this, this);
 
 		BoardManager.load(this);
@@ -287,7 +286,7 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		BoardManager.getInstance().setupNewBoard(e.getPlayer(), adapter);
+		BoardManager.getInstance().setupNewBoard(e.getPlayer(), new TestAdapter());
 	}
 
 	@EventHandler
