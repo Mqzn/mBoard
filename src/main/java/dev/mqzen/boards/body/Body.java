@@ -48,6 +48,7 @@ public class Body implements Iterable<Line> {
 		this.lines = lines;
 	}
 
+
 	public static Body of(Body otherBody) {
 		return new Body(otherBody);
 	}
@@ -59,6 +60,14 @@ public class Body implements Iterable<Line> {
 			body.addNewLine(ChatColor.translateAlternateColorCodes('&', line));
 		}
 
+		return body;
+	}
+
+	public static Body of(Collection<String> lines) {
+		Body body = empty();
+		for (String line : lines) {
+			body.addNewLine(ChatColor.translateAlternateColorCodes('&', line));
+		}
 		return body;
 	}
 

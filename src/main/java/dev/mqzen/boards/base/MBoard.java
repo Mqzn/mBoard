@@ -1,8 +1,8 @@
 package dev.mqzen.boards.base;
 
-import dev.mqzen.boards.util.FastReflection;
 import dev.mqzen.boards.body.Body;
 import dev.mqzen.boards.body.Line;
+import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import javax.print.attribute.Attribute;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
