@@ -12,7 +12,7 @@ make a normal scoreboard using the old plain bukkit's api
 If you're using a dependency manager software like maven or gradle
 then just follow the steps below to setup your project
 and allow it to use the power of mTime !
-otherwise, just [Download](https://github.com/Mqzn/mBoard/releases/tag/1.2) the jar and add it as an artifact dependency
+otherwise, just [Download](https://github.com/Mqzn/mBoard/releases/tag/1.3) the jar and add it as an artifact dependency
 
 
 ### Step 1: Add the repository
@@ -45,7 +45,7 @@ repositories {
 <dependency>
     <groupId>com.github.Mqzn</groupId>
     <artifactId>mBoard</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 ```groovy
 
 dependencies {
-    implementation 'com.github.mqzn:mBoard:1.2'
+    implementation 'com.github.mqzn:mBoard:1.3'
 }
 ```
 
@@ -131,11 +131,11 @@ public final class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Body getBody(Player player) {
 		return Body.of(
-						"&7&l+------------------------+",
-						"",
-						"&8> &eThis is mBoard,say Hello",
-						"", 
-                        "&7&l+------------------------+");
+				"&7&l+------------------------+",
+				"",
+				"&8> &eThis is mBoard,say Hello",
+				"", 
+                                "&7&l+------------------------+");
 	}
 
 }
@@ -163,9 +163,9 @@ public class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("Hello")
-						.withAnimation(ScrollAnimation.of("&eHello", 32/*width of the scrolling*/, 1/*the distance that's moved*/))
-						.build();
+				.withText("Hello")
+				.withAnimation(ScrollAnimation.of("&eHello", 32/*width of the scrolling*/, 1/*the distance that's moved*/))
+				.build();
 	}
 
 	/**
@@ -239,9 +239,9 @@ public class TestAdapter implements BoardAdapter {
 	@Override
 	public @NonNull Title title(Player player) {
 		return Title.builder()
-						.withText("&4mBoard &7| &cA lib")
-						.withAnimation(titleAnimation)
-						.build();
+				.withText("&4mBoard &7| &cA lib")
+				.withAnimation(titleAnimation)
+				.build();
 	}
 
 	/**
