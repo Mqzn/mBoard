@@ -12,7 +12,7 @@ make a normal scoreboard using the old plain bukkit's api
 If you're using a dependency manager software like maven or gradle
 then just follow the steps below to setup your project
 and allow it to use the power of mTime !
-otherwise, just [Download](https://github.com/Mqzn/mBoard/releases/tag/1.3) the jar and add it as an artifact dependency
+otherwise, just [Download](https://github.com/Mqzn/mBoard/releases/tag/1.4) the jar and add it as an artifact dependency
 
 
 ### Step 1: Add the repository
@@ -45,7 +45,7 @@ repositories {
 <dependency>
     <groupId>com.github.Mqzn</groupId>
     <artifactId>mBoard</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 ```groovy
 
 dependencies {
-    implementation 'com.github.mqzn:mBoard:1.3'
+    implementation 'com.github.mqzn:mBoard:1.4'
 }
 ```
 
