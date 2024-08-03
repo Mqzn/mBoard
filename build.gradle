@@ -35,7 +35,7 @@ dependencies {
 
 shadowJar{
     archiveBaseName.set("mBoard-${project.version}" + ".jar")
-    destinationDirectory.set(file("D:\\minecraft-dev\\servers\\paper-1.20\\plugins"))
+    //destinationDirectory.set(file("D:\\minecraft-dev\\servers\\paper-1.20\\plugins"))
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
