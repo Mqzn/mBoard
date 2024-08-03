@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 /**
- * @Author <a href="https://github.com/Cobeine">Cobeine</a>
+ * @Author <a href="https://github.com/MrMicky-FR">MrMicky-FR</a>
  */
 
 public abstract class BoardBase<T> {
