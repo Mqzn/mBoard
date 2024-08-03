@@ -8,6 +8,6 @@ public interface BoardUpdate  {
 	 *
 	 * @param board the board to be updated
 	 */
-	void update(MBoard board);
+	void update(BoardBase<?> board);
 
 }
