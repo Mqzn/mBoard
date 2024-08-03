@@ -45,7 +45,7 @@ repositories {
 <dependency>
     <groupId>com.github.Mqzn</groupId>
     <artifactId>mBoard</artifactId>
-    <version>1.4</version>
+    <version>VERSION</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 ```groovy
 
 dependencies {
-    implementation 'com.github.mqzn:mBoard:1.4'
+    implementation 'com.github.mqzn:mBoard:<VERSION>'
 }
 ```
 
@@ -119,29 +119,50 @@ Such as e.g: Title or Lines
 
 #### Creating your adapter
 ```java
-public final class TestAdapter implements BoardAdapter {
-	
-	@Override
-	public @NonNull Title title(Player player) {
-		return Title.builder().withText("&4&lmBoard")
-				      .withAnimation(titleAnimation)
-				      .build();
-	}
+//This is mainly for legacy minecraft servers (1.8.8 to 1.17)
+public final class LegacyTestAdapter implements BoardAdapter {
 
-	@Override
-	public @NonNull Body getBody(Player player) {
-		return Body.of(
-				"&7&l+------------------------+",
-				"",
-				"&8> &eThis is mBoard,say Hello",
-				"", 
-                                "&7&l+------------------------+");
-	}
+    @Override
+    public @NonNull Title<?> title(Player player) {
+        return Title.legacy().ofText("test");
+    }
+
+    @Override
+    public @NonNull Body<?> getBody(Player player) {
+        return Body.legacy(
+                "&7&l+------------------------+",
+                "",
+                "&8> &eThis is mBoard,say Hello",
+                "",
+                "&7&l+------------------------+");
+    }
+
+}
+//for minecraft 1.18+, uses KyoriAdventure
+public final class AdventureTestAdapter implements BoardAdapter {
+
+    @Override
+    public @NonNull Title<?> title(Player player) {
+        return Title.adventure().ofComponent("test");
+    }
+
+    @Override
+    public @NonNull Body<?> getBody(Player player) {
+        return Body.adventure(
+                Component.text("&7&l+------------------------+"),
+                Component.empty(),
+                Component.text("&8> &eThis is mBoard,say Hello"),
+                Component.empty(),
+                Component.text("&7&l+------------------------+"));
+    }
 
 }
 ```
 
 ### Animations
+<center> <b> NOTE: Animations are still in development for the new compatibility update. Any code example below might not work </b>  </center>
+
+
 Animated Lines are basically dynamic lines that change every x tick
 where x is the **update interval** that can be modified using `BoardManager#setUpdateInterval`
 
