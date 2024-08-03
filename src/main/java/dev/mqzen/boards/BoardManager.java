@@ -1,17 +1,22 @@
 package dev.mqzen.boards;
 
 import dev.mqzen.boards.base.BoardAdapter;
+import dev.mqzen.boards.base.BoardBase;
 import dev.mqzen.boards.base.BoardUpdate;
-import dev.mqzen.boards.base.MBoard;
+import dev.mqzen.boards.base.impl.LegacyBoard;
+import dev.mqzen.boards.base.impl.AdventureBoard;
+import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * A manager class to hold the created boards for players online
@@ -24,7 +29,15 @@ public final class BoardManager {
 
 	private final @NonNull Plugin plugin;
 	private @Nullable Integer updateTaskId = null;
-	private final @NonNull Map<UUID, MBoard> boards = new ConcurrentHashMap<>();
+	private final @NonNull Map<UUID, BoardBase<?>> boards = new HashMap<>();
+	public static final boolean ADVENTURE_SUPPORT;
+	private final @Getter Logger logger = Logger.getLogger(this.getClass().getSimpleName());
+
+	static {
+		ADVENTURE_SUPPORT = FastReflection
+				.optionalClass("io.papermc.paper.adventure.PaperAdventure")
+				.isPresent();
+	}
 
 	private @Getter long updateInterval = 3L; // in ticks
 	private BoardManager(@NonNull Plugin plugin) {
@@ -87,8 +100,8 @@ public final class BoardManager {
 	 * @return the board made for that player
 	 * returns null if the player has no board registered !
 	 */
-	public @Nullable MBoard getBoard(@NonNull UUID uuid) {
-		return boards.get(uuid);
+	public @Nullable <T> BoardBase<T> getBoard(@NonNull UUID uuid) throws ClassCastException {
+		return (BoardBase<T>) boards.get(uuid);
 	}
 
 	/**
@@ -96,7 +109,7 @@ public final class BoardManager {
 	 * @param uuid the uuid of the player to register the board for.
 	 * @param mBoard the board to be registered for that uuid
 	 */
-	private void registerBoard(UUID uuid, MBoard mBoard) {
+	private void registerBoard(UUID uuid, BoardBase<?> mBoard) {
 		boards.put(uuid, mBoard);
 	}
 
@@ -109,7 +122,8 @@ public final class BoardManager {
 	 * @param adapter the info carrier of the board
 	 */
 	public void setupNewBoard(Player player, BoardAdapter adapter) {
-		registerBoard(player.getUniqueId(), new MBoard(player, adapter));
+		BoardBase<?> board = ADVENTURE_SUPPORT ? new AdventureBoard(player, adapter) : new LegacyBoard(player, adapter);
+		registerBoard(player.getUniqueId(), board);
 	}
 
 	/**
@@ -119,7 +133,7 @@ public final class BoardManager {
 	 * @param player the owner of a board.
 	 */
 	public void removeBoard(@NonNull Player player) {
-		MBoard board = getBoard(player.getUniqueId());
+		BoardBase<?> board = getBoard(player.getUniqueId());
 		if(board != null) {
 			board.delete();
 		}
@@ -133,8 +147,8 @@ public final class BoardManager {
 	 * @see BoardManager#setUpdateInterval(long)
 	 */
 	public void startBoardUpdaters() {
-		updateTaskId = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, ()-> {
-			for(MBoard board : boards.values()) {
+		updateTaskId = Bukkit.getScheduler().runTaskTimer(plugin, ()-> {
+			for(BoardBase<?> board : boards.values()) {
 				if(board.isDeleted())continue;
 				BoardUpdate update = board.getUpdate();
 				if(update == null) continue;
@@ -158,5 +172,6 @@ public final class BoardManager {
 		if(updateTaskId != null)
 			Bukkit.getScheduler().cancelTask(updateTaskId);
 	}
+
 
 }
