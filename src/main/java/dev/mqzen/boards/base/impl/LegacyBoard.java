@@ -35,9 +35,6 @@ public class LegacyBoard extends BoardBase<String> {
 
     /**
      * Creates a new FastBoard.
-     *
-     * @param player  the owner of the scoreboard
-     * @param adapter
      */
     private final BoardAdapter adapter;
     public LegacyBoard(Player player, BoardAdapter adapter) {
@@ -113,8 +110,8 @@ public class LegacyBoard extends BoardBase<String> {
 
         if (prefix.length() > maxLength || suffix.length() > maxLength) {
             // Something went wrong, just cut to prevent client crash/kick
-            prefix = prefix.substring(0, maxLength);
-            suffix = suffix.substring(0, maxLength);
+            prefix = prefix.substring(0, Math.min(maxLength, prefix.length()));
+            suffix = suffix.substring(0, Math.min(maxLength, suffix.length()));
         }
 
         sendTeamPacket(score, TeamMode.UPDATE, prefix, suffix);
