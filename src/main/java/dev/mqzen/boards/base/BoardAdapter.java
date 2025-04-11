@@ -35,13 +35,13 @@ public interface BoardAdapter {
 	 * Returns an update action if
 	 * the board has any type of animations
 	 * this is recommended to implement and return
-	 * your own implementation.However, the best implementation recommendedis this:
-	 *
+	 * your own implementation.However, the best implementation recommended is this:
+	 * <p>
 	 *   return (board) -> {
 	 * 		board.updateTitle();
 	 * 		board.updateBody();
 	 *   };
-	 *
+	 * </p>
 	 *
 	 * @return the actions to be executed as an update to the board
 	 */
