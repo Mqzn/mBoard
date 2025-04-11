@@ -6,6 +6,7 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Optional;
 
@@ -31,6 +32,14 @@ public interface Title<T> {
 	@NonNull Optional<T> get();
 
 	/**
+	 * Sets a {@link Animation} for the title
+	 * @param animation the animation
+	 * @return the title animation
+	 * @param <TITLE> the type of title instance to return
+	 */
+	<TITLE extends Title<T>> TITLE withAnimation(@Nullable Animation<T> animation);
+
+	/**
 	 * A method to provide the animation of the title
 	 * By default, a title has no animation unless
 	 * you set its animation by overriding this method
@@ -54,10 +63,12 @@ public interface Title<T> {
 		return loadAnimation().isPresent();
 	}
 
-	 @Setter
-     class TitleImplementation<T> implements Title<T>{
-		 private T content;
 
+
+	@Setter
+	class TitleImplementation<T> implements Title<T>{
+		 private T content;
+		 private Animation<T> titleAnimation;
 		 public TitleImplementation() {
 
 		 }
@@ -67,6 +78,26 @@ public interface Title<T> {
 		 @Override
 		 public @NonNull Optional<T> get() {
 			 return Optional.of(content);
+		 }
+
+		 @Override @SuppressWarnings("unchecked")
+		 public <TITLE extends Title<T>> TITLE withAnimation(@Nullable Animation<T> animation) {
+			 setTitleAnimation(animation);
+			 return (TITLE) this;
+		 }
+
+		 /**
+		  * A method to provide the animation of the title
+		  * By default, a title has no animation unless
+		  * you set its animation by overriding this method
+		  * and returning your animation object
+		  * e.g: Optional.ofNullable(yourAnimationInstance)
+		  *
+		  * @return the Animation of the title if present
+		  */
+		 @Override
+		 public Optional<Animation<T>> loadAnimation() {
+			 return Optional.ofNullable(titleAnimation);
 		 }
 
 		 public static class LegacyTitle extends TitleImplementation<String> {
