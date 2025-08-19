@@ -1,11 +1,12 @@
 package dev.mqzen.boards.base.impl;
 
 import dev.mqzen.boards.BoardManager;
-import dev.mqzen.boards.base.BoardAdapter;
+import dev.mqzen.boards.animation.core.Animation;
 import dev.mqzen.boards.base.BoardBase;
 import dev.mqzen.boards.base.BoardUpdate;
 import dev.mqzen.boards.base.ModernBoardAdapter;
 import dev.mqzen.boards.entity.Line;
+import dev.mqzen.boards.entity.Title;
 import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -16,21 +17,23 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static dev.mqzen.boards.BoardManager.ADVENTURE_SUPPORT;
 
 
 @Getter
 public class AdventureBoard extends BoardBase<Component> {
-
+    
     private static final MethodHandle COMPONENT_METHOD;
     private static final Object EMPTY_COMPONENT;
-
+    
     static {
-
+        
         MethodHandles.Lookup lookup = MethodHandles.lookup();
-
+        
         try {
             if (ADVENTURE_SUPPORT) {
                 Class<?> paperAdventure = Class.forName("io.papermc.paper.adventure.PaperAdventure");
@@ -46,76 +49,141 @@ public class AdventureBoard extends BoardBase<Component> {
             throw new ExceptionInInitializerError(t);
         }
     }
+    
     private final ModernBoardAdapter adapter;
+    
+    // Cache for animations to preserve their state
+    private Animation<Component> cachedTitleAnimation;
+    private final Map<Integer, Animation<Component>> cachedLineAnimations = new HashMap<>();
+    
     public AdventureBoard(Player player, ModernBoardAdapter adapter) {
         super(player);
         this.adapter = adapter;
-
+        
         if (!update()) {
             BoardManager.getInstance().getLogger().warning("Hey! Looks like you're using legacy text for your board instead of components," +
                     " legacy text has been automatically converted for now. It is better that you use kyori adventure for modern minecraft.");
         }
     }
-
+    
     @Override
     public BoardUpdate getUpdate() {
         return adapter.getBoardUpdate();
     }
-
+    
     @Override
     protected void sendLineChange(int score) throws Throwable {
         Component line = getLineByScore(score);
-
+        
         sendTeamPacket(score, BoardBase.TeamMode.UPDATE, line, null);
     }
-
+    
     @Override
     protected Object toMinecraftComponent(Component component) throws Throwable {
         if (component == null) {
             return EMPTY_COMPONENT;
         }
-
+        
         // If the server isn't running adventure natively, we convert the component to legacy text
         // and then to a Minecraft chat component
         if (!ADVENTURE_SUPPORT) {
             String legacy = serializeLine(component);
-
+            
             return Array.get(COMPONENT_METHOD.invoke(legacy), 0);
         }
-
+        
         return COMPONENT_METHOD.invoke(component);
     }
-
+    
     @Override
     protected String serializeLine(Component value) {
-       return LegacyComponentSerializer.legacySection().serialize(value);
+        return LegacyComponentSerializer.legacySection().serialize(value);
     }
-
+    
     @Override
     protected Component emptyLine() {
         return Component.empty();
     }
-
+    
     @Override
     public boolean update() {
         try {
-            updateTitle((Component) adapter.title(getPlayer()).get().orElseThrow());
-            for (Line<?> line : adapter.getBody(getPlayer()).getLines()) {
-                updateLine(line.getIndex(), (Component) line.fetchContent());
+            // Get new title and body from adapter (for dynamic content)
+            Title<Component> newTitle = adapter.title(getPlayer());
+            
+            // Handle title animation caching
+            if (newTitle.loadAnimation().isPresent()) {
+                Animation<Component> newTitleAnimation = newTitle.loadAnimation().get();
+                
+                // If we don't have a cached animation or it's a different animation, cache it
+                if (cachedTitleAnimation == null || !isSameAnimation(cachedTitleAnimation, newTitleAnimation)) {
+                    cachedTitleAnimation = newTitleAnimation;
+                } else {
+                    // Use the cached animation to preserve state
+                    ((Title.TitleImplementation<Component>) newTitle).setTitleAnimation(cachedTitleAnimation);
+                }
+            } else {
+                cachedTitleAnimation = null;
             }
+            
+            // Update title with preserved animation state
+            updateTitle(newTitle.get().orElseThrow());
+            
+            // Handle body/lines with animation caching
+            for (Line<Component> line : adapter.getBody(getPlayer()).getLines()) {
+                int index = line.getIndex();
+                Component content;
+                
+                // Handle line animation caching
+                if (line.getAnimation() != null) {
+                    Animation<Component> lineAnimation = line.getAnimation();
+                    Animation<Component> cachedAnimation = cachedLineAnimations.get(index);
+                    
+                    // If we don't have a cached animation or it's different, cache the new one
+                    if (cachedAnimation == null || !isSameAnimation(cachedAnimation, lineAnimation)) {
+                        cachedLineAnimations.put(index, lineAnimation);
+                        line.setAnimation(lineAnimation);
+                    } else {
+                        // Use cached animation to preserve state
+                        line.setAnimation(cachedAnimation);
+                    }
+                    
+                    content = line.fetchContent();
+                } else {
+                    // Remove cached animation if line no longer has one
+                    cachedLineAnimations.remove(index);
+                    content = line.getContent();
+                }
+                
+                updateLine(index, content);
+            }
+            
+            // Clean up cached animations for lines that no longer exist
+            int bodySize = adapter.getBody(getPlayer()).getLines().size();
+            cachedLineAnimations.entrySet().removeIf(entry -> entry.getKey() >= bodySize);
+            
             return true;
         } catch (ClassCastException e) {
+            // Fallback for legacy text
             for (Line<?> line : adapter.getBody(getPlayer()).getLines()) {
                 updateLine(line.getIndex(), deserialize(line.fetchContent()));
             }
             updateTitle(deserialize(adapter.title(getPlayer()).get().orElseThrow()));
             return false;
         }
-
     }
-
+    
     private Component deserialize(Object o) {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(o.toString());
     }
-
+    
+    /**
+     * Helper method to check if two animations are the "same"
+     * (same original content and type)
+     */
+    private boolean isSameAnimation(Animation<Component> cached, Animation<Component> newAnim) {
+        // Check if they're the same type and have the same original content
+        return cached.getClass().equals(newAnim.getClass())
+                && Objects.equals(cached.getOriginal(), newAnim.getOriginal());
+    }
 }

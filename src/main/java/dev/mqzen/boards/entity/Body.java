@@ -15,12 +15,14 @@ public interface Body<T> {
     void addLine(Line<T> line);
     
     List<Line<T>> getLines();
-
+    
     default void setLine(int index, Line<T> line) {
-        if(index < 0 || index > getLines().size()) return;
-        getLines().set(index,line);
+        if(index < 0 || index >= getLines().size()) return;
+        // Ensure the line has the correct index
+        line.setIndex(index);
+        getLines().set(index, line);
     }
-
+    
     static BodyImplementation.LegacyBody legacy(String... lines) {
         return legacy(List.of(lines));
     }
@@ -29,9 +31,9 @@ public interface Body<T> {
         return new BodyImplementation.LegacyBody(lines);
     }
     
-
+    
     static BodyImplementation.AdventureBody adventure(Component... components) {
-            return adventure(List.of(components));
+        return adventure(List.of(components));
     }
     
     static BodyImplementation.AdventureBody adventure(List<Component> components) {
@@ -41,33 +43,37 @@ public interface Body<T> {
     @Getter
     abstract class BodyImplementation<T> implements Body<T>{
         private final List<Line<T>> lines;
-
+        
         public BodyImplementation() {
             lines = new CopyOnWriteArrayList<>();
         }
-
+        
         public static class LegacyBody extends BodyImplementation<String>{
-
+            
             public LegacyBody(List<String> lines) {
                 super();
                 for (String line : lines) {
                     addLine(line);
                 }
             }
-
+            
             @Override
             public void addLine(String content) {
-                int lastIndex = getLines().size();
-                getLines().add(Line.legacy(ChatColor.translateAlternateColorCodes('&',content), lastIndex));
+                int correctIndex = getLines().size();
+                getLines().add(Line.legacy(ChatColor.translateAlternateColorCodes('&', content), correctIndex));
             }
             
             @Override
             public void addLine(Line<String> line) {
+                // FIXED: Always ensure the line gets the correct index based on its position
+                int correctIndex = getLines().size();
+                line.setIndex(correctIndex);
                 getLines().add(line);
             }
         }
+        
         public static class AdventureBody extends BodyImplementation<Component>{
-
+            
             public AdventureBody(List<Component> lines) {
                 super();
                 for (Component line : lines) {
@@ -77,12 +83,15 @@ public interface Body<T> {
             
             @Override
             public void addLine(Component content) {
-                int lastIndex = getLines().size();
-                getLines().add(Line.adventure(content, lastIndex));
+                int correctIndex = getLines().size();
+                getLines().add(Line.adventure(content, correctIndex));
             }
             
             @Override
             public void addLine(Line<Component> line) {
+                // FIXED: Always ensure the line gets the correct index based on its position
+                int correctIndex = getLines().size();
+                line.setIndex(correctIndex);
                 getLines().add(line);
             }
         }
