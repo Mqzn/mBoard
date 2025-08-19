@@ -4,12 +4,10 @@ import dev.mqzen.boards.animation.HighlightingAnimation;
 import dev.mqzen.boards.animation.ScrollAnimation;
 import dev.mqzen.boards.animation.core.Animation;
 import dev.mqzen.boards.base.BoardAdapter;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
 
 /**
@@ -69,7 +67,6 @@ public interface Title<T> {
 	
 	
 	
-	@Setter
 	class TitleImplementation<T> implements Title<T>{
 		protected T content;
 		private Animation<T> titleAnimation;
@@ -89,7 +86,19 @@ public interface Title<T> {
 			return Optional.of(content);
 		}
 		
+		public void setContent(T content) {
+			if(titleAnimation != null) {
+				throw new IllegalStateException("You cannot set a title content while being based on animation");
+			}
+			this.content = content;
+		}
 		
+		public void setTitleAnimation(Animation<T> titleAnimation) {
+			this.titleAnimation = titleAnimation;
+			if(titleAnimation != null) {
+				this.content = titleAnimation.getOriginal();
+			}
+		}
 		
 		@Override @SuppressWarnings("unchecked")
 		public <TITLE extends Title<T>> TITLE withAnimation(@Nullable Animation<T> animation) {
@@ -119,10 +128,20 @@ public interface Title<T> {
 			}
 			
 			public LegacyTitle withScroll(int width, int spaceBetween) {
+				if(this.content == null) {
+					throw new IllegalArgumentException("You cannot call withScroll() without calling #ofText() before it to set the text, " +
+							"the scrolling animation will be based on no text," +
+							" Alternatively you can set it using #withAnimation");
+				}
 				return super.withAnimation(ScrollAnimation.of(this.content, width, spaceBetween));
 			}
 			
 			public LegacyTitle withHighlight(org.bukkit.ChatColor primaryColor, org.bukkit.ChatColor secondaryColor) {
+				if(this.content == null) {
+					throw new IllegalArgumentException("You cannot call withHighlight() without calling #ofText() before it to set the text, " +
+							"the scrolling animation will be based on no text," +
+							" Alternatively you can set it using #withAnimation");
+				}
 				return super.withAnimation(HighlightingAnimation.of(this.content, primaryColor, secondaryColor));
 			}
 		}
