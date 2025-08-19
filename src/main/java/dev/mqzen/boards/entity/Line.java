@@ -77,30 +77,9 @@ public interface Line<T> {
         public LegacyLineBuilder withAnimation(Animation<String> customAnimation) {
             // Validate that the animation is based on this line's content
             if (customAnimation != null && !this.content.equals(customAnimation.getOriginal())) {
-                // Create a new animation with the line's content
-                if (customAnimation instanceof HighlightingAnimation) {
-                    // Recreate with line's content
-                    this.animation = HighlightingAnimation.of(this.content, "&f", "&e");
-                } else if (customAnimation instanceof ScrollAnimation) {
-                    // Default scroll settings
-                    this.animation = ScrollAnimation.of(this.content, 20, 5);
-                } else {
-                    // For custom animations, wrap or recreate
-                    this.animation = new Animation<>(this.content) {
-                        private final Animation<String> delegate = customAnimation;
-                        private int position = 0;
-                        
-                        @Override
-                        public String fetchNextChange() {
-                            // Use the line's content for animation
-                            position++;
-                            return content + " " + (position % 3 == 0 ? "." : position % 3 == 1 ? ".." : "...");
-                        }
-                    };
-                }
-            } else {
-                this.animation = customAnimation;
+                throw new IllegalStateException("Animation's content '" + customAnimation.getOriginal() + "' does not match the line's content '" + content + "'");
             }
+            this.animation = customAnimation;
             return this;
         }
         
