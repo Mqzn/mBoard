@@ -65,8 +65,6 @@ public interface Title<T> {
 		return loadAnimation().isPresent();
 	}
 	
-	
-	
 	class TitleImplementation<T> implements Title<T>{
 		protected T content;
 		private Animation<T> titleAnimation;
@@ -153,7 +151,5 @@ public interface Title<T> {
 			}
 		}
 	}
-	
-	
 	
 }
