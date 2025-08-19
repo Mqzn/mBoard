@@ -1,8 +1,6 @@
 package dev.mqzen.boards;
 
-import dev.mqzen.boards.base.BoardAdapter;
-import dev.mqzen.boards.base.BoardBase;
-import dev.mqzen.boards.base.BoardUpdate;
+import dev.mqzen.boards.base.*;
 import dev.mqzen.boards.base.impl.LegacyBoard;
 import dev.mqzen.boards.base.impl.AdventureBoard;
 import dev.mqzen.boards.util.FastReflection;
@@ -10,9 +8,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,9 +24,9 @@ import java.util.logging.Logger;
  */
 public final class BoardManager {
 
-	private final @NonNull Plugin plugin;
+	private final @NotNull Plugin plugin;
 	private @Nullable Integer updateTaskId = null;
-	private final @NonNull Map<UUID, BoardBase<?>> boards = new HashMap<>();
+	private final @NotNull Map<UUID, BoardBase<?>> boards = new HashMap<>();
 	public static final boolean ADVENTURE_SUPPORT;
 	private final @Getter Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -40,7 +37,7 @@ public final class BoardManager {
 	}
 
 	private @Getter long updateInterval = 3L; // in ticks
-	private BoardManager(@NonNull Plugin plugin) {
+	private BoardManager(@NotNull Plugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -68,7 +65,7 @@ public final class BoardManager {
 	 * @return the instance loaded :D
 	 */
 
-	public static @NonNull BoardManager getInstance() {
+	public static @NotNull BoardManager getInstance() {
 		if(instance == null)
 			throw new IllegalStateException("BoardManager instance is not initialized correctly," +
 							" please try calling the method BoardManager#load");
@@ -100,7 +97,8 @@ public final class BoardManager {
 	 * @return the board made for that player
 	 * returns null if the player has no board registered !
 	 */
-	public @Nullable <T> BoardBase<T> getBoard(@NonNull UUID uuid) throws ClassCastException {
+	@SuppressWarnings("unchecked")
+	public @Nullable <T> BoardBase<T> getBoard(@NotNull UUID uuid) throws ClassCastException {
 		return (BoardBase<T>) boards.get(uuid);
 	}
 
@@ -121,9 +119,22 @@ public final class BoardManager {
 	 * @param player the player to have the new board created and registered
 	 * @param adapter the info carrier of the board
 	 */
-	public void setupNewBoard(Player player, BoardAdapter adapter) {
-		BoardBase<?> board = ADVENTURE_SUPPORT ? new AdventureBoard(player, adapter) : new LegacyBoard(player, adapter);
-		registerBoard(player.getUniqueId(), board);
+	public void setupNewBoard(Player player, BoardAdapter<?> adapter) {
+		if(adapter instanceof ModernBoardAdapter && !ADVENTURE_SUPPORT) {
+			throw new UnsupportedOperationException("Use of modern board adapter is not supported in this mc version.");
+		}
+		
+		BoardBase<?> board;
+        if (ADVENTURE_SUPPORT) {
+			if (!(adapter instanceof ModernBoardAdapter modernBoardAdapter)) {
+				throw new IllegalStateException("You cannot use legacy board adapter in a modern mc version !");
+			}
+            board = new AdventureBoard(player, modernBoardAdapter);
+        } else {
+            board = new LegacyBoard(player, (LegacyBoardAdapter) adapter);
+        }
+		
+        registerBoard(player.getUniqueId(), board);
 	}
 
 	/**
@@ -132,7 +143,7 @@ public final class BoardManager {
 	 *
 	 * @param player the owner of a board.
 	 */
-	public void removeBoard(@NonNull Player player) {
+	public void removeBoard(@NotNull Player player) {
 		BoardBase<?> board = getBoard(player.getUniqueId());
 		if(board != null) {
 			board.delete();

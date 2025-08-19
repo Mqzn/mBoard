@@ -1,9 +1,8 @@
 package dev.mqzen.boards.base.impl;
 
-import dev.mqzen.boards.BoardManager;
-import dev.mqzen.boards.base.BoardAdapter;
 import dev.mqzen.boards.base.BoardBase;
 import dev.mqzen.boards.base.BoardUpdate;
+import dev.mqzen.boards.base.LegacyBoardAdapter;
 import dev.mqzen.boards.entity.Line;
 import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Array;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Getter
 public class LegacyBoard extends BoardBase<String> {
@@ -36,8 +34,8 @@ public class LegacyBoard extends BoardBase<String> {
     /**
      * Creates a new FastBoard.
      */
-    private final BoardAdapter adapter;
-    public LegacyBoard(Player player, BoardAdapter adapter) {
+    private final LegacyBoardAdapter adapter;
+    public LegacyBoard(Player player, LegacyBoardAdapter adapter) {
         super(player);
         this.adapter = adapter;
         update();
@@ -138,7 +136,7 @@ public class LegacyBoard extends BoardBase<String> {
 
     @Override
     public boolean update() {
-        for (Line<?> line : adapter.getBody(getPlayer()).getLines()) {
+        for (Line<String> line : adapter.getBody(getPlayer()).getLines()) {
             updateLine(line.getIndex(), (String) line.fetchContent());
         }
         updateTitle((String) adapter.title(getPlayer()).get().orElseThrow());

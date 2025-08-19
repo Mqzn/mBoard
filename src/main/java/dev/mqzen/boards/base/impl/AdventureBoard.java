@@ -4,6 +4,7 @@ import dev.mqzen.boards.BoardManager;
 import dev.mqzen.boards.base.BoardAdapter;
 import dev.mqzen.boards.base.BoardBase;
 import dev.mqzen.boards.base.BoardUpdate;
+import dev.mqzen.boards.base.ModernBoardAdapter;
 import dev.mqzen.boards.entity.Line;
 import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
@@ -45,8 +46,8 @@ public class AdventureBoard extends BoardBase<Component> {
             throw new ExceptionInInitializerError(t);
         }
     }
-    private final BoardAdapter adapter;
-    public AdventureBoard(Player player, BoardAdapter adapter) {
+    private final ModernBoardAdapter adapter;
+    public AdventureBoard(Player player, ModernBoardAdapter adapter) {
         super(player);
         this.adapter = adapter;
 

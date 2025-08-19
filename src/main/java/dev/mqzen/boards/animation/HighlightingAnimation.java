@@ -2,36 +2,36 @@ package dev.mqzen.boards.animation;
 
 import dev.mqzen.boards.animation.core.Animation;
 import org.bukkit.ChatColor;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public final class HighlightingAnimation extends Animation<String> {
 
-	private final @NonNull HighLighter highLighter;
+	private final @NotNull HighLighter highLighter;
 	private int position=0;
 
-	private HighlightingAnimation(@NonNull String message,
-	                              @NonNull String primaryColor,
-	                              @NonNull String secondaryColor) {
+	private HighlightingAnimation(@NotNull String message,
+	                              @NotNull String primaryColor,
+	                              @NotNull String secondaryColor) {
 		super(message);
 		this.highLighter = HighLighter.of(message, primaryColor, secondaryColor);
 	}
 
-	private HighlightingAnimation(@NonNull String message,
-	                              @NonNull ChatColor primaryColor,
-	                              @NonNull ChatColor secondaryColor) {
+	private HighlightingAnimation(@NotNull String message,
+	                              @NotNull ChatColor primaryColor,
+	                              @NotNull ChatColor secondaryColor) {
 		super(message);
 		this.highLighter = HighLighter.of(message, primaryColor, secondaryColor);
 	}
 
-	public static HighlightingAnimation of(@NonNull String message,
-	                                       @NonNull ChatColor primaryColor,
-	                                       @NonNull ChatColor secondaryColor) {
+	public static HighlightingAnimation of(@NotNull String message,
+	                                       @NotNull ChatColor primaryColor,
+	                                       @NotNull ChatColor secondaryColor) {
 		return new HighlightingAnimation(message, primaryColor, secondaryColor);
 	}
 
-	public static HighlightingAnimation of(@NonNull String message,
-	                                       @NonNull String primaryColor,
-	                                       @NonNull String secondaryColor) {
+	public static HighlightingAnimation of(@NotNull String message,
+	                                       @NotNull String primaryColor,
+	                                       @NotNull String secondaryColor) {
 		return new HighlightingAnimation(message, primaryColor, secondaryColor);
 	}
 

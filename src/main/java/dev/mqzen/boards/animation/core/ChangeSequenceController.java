@@ -1,7 +1,7 @@
 package dev.mqzen.boards.animation.core;
 
 import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -29,7 +29,7 @@ public class ChangeSequenceController<T> {
 	}
 
 
-	public @NonNull T next()  {
+	public @NotNull T next()  {
 		if(changeIndex >= sequence.length()) {
 			changeIndex = 0;
 		}
@@ -41,7 +41,7 @@ public class ChangeSequenceController<T> {
 		return change;
 	}
 
-	public @NonNull T previous() {
+	public @NotNull T previous() {
 		changeIndex--;
 
 		if(changeIndex < 0) {

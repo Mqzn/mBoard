@@ -1,7 +1,8 @@
 package dev.mqzen.boards.animation;
 
 import org.bukkit.ChatColor;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public final class HighLighter {
 		return builder.toString();
 	}
 
-	public @NonNull List<String> getHighLighted() {
+	public @NotNull List<String> getHighLighted() {
 		return highLighted;
 	}
 

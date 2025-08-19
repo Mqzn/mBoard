@@ -5,8 +5,8 @@ import dev.mqzen.boards.base.BoardAdapter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public interface Title<T> {
 	 *
 	 * @return the text/content of this title
 	 */
-	@NonNull Optional<T> get();
+	Optional<T> get();
 
 	/**
 	 * Sets a {@link Animation} for the title
@@ -76,7 +76,7 @@ public interface Title<T> {
 			 this.content = content;
 		 }
 		 @Override
-		 public @NonNull Optional<T> get() {
+		 public @NotNull Optional<T> get() {
 			 return Optional.of(content);
 		 }
 

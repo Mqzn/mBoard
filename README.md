@@ -123,12 +123,12 @@ Such as e.g: Title or Lines
 public final class LegacyTestAdapter implements BoardAdapter {
 
     @Override
-    public @NonNull Title<?> title(Player player) {
+    public @NotNull Title<?> title(Player player) {
         return Title.legacy().ofText("test");
     }
 
     @Override
-    public @NonNull Body<?> getBody(Player player) {
+    public @NotNull Body<?> getBody(Player player) {
         return Body.legacy(
                 "&7&l+------------------------+",
                 "",
@@ -142,12 +142,12 @@ public final class LegacyTestAdapter implements BoardAdapter {
 public final class AdventureTestAdapter implements BoardAdapter {
 
     @Override
-    public @NonNull Title<?> title(Player player) {
+    public @NotNull Title<?> title(Player player) {
         return Title.adventure().ofComponent("test");
     }
 
     @Override
-    public @NonNull Body<?> getBody(Player player) {
+    public @NotNull Body<?> getBody(Player player) {
         return Body.adventure(
                 Component.text("&7&l+------------------------+"),
                 Component.empty(),
@@ -182,7 +182,7 @@ public class TestAdapter implements BoardAdapter {
 	 * @return the title of the scoreboard
 	 */
 	@Override
-	public @NonNull Title title(Player player) {
+	public @NotNull Title title(Player player) {
 		return Title.builder()
 				.withText("Hello")
 				.withAnimation(ScrollAnimation.of("&eHello", 32/*width of the scrolling*/, 1/*the distance that's moved*/))
@@ -199,7 +199,7 @@ public class TestAdapter implements BoardAdapter {
 	 * @return the body of the scoreboard
 	 */
 	@Override
-	public @NonNull Body getBody(Player player) {
+	public @NotNull Body getBody(Player player) {
 		Body body = Body.of("&7&l&m+----------------+");
 		body.addNewLine(HighlightingAnimation.of("Test&Hello", ChatColor.GOLD, ChatColor.YELLOW));
 		body.addNewLine("&7&l&m+-----------------+");
@@ -258,7 +258,7 @@ public class TestAdapter implements BoardAdapter {
 	 */
 
 	@Override
-	public @NonNull Title title(Player player) {
+	public @NotNull Title title(Player player) {
 		return Title.builder()
 				.withText("&4mBoard &7| &cA lib")
 				.withAnimation(titleAnimation)
@@ -275,7 +275,7 @@ public class TestAdapter implements BoardAdapter {
 	 * @return the body of the scoreboard
 	 */
 	@Override
-	public @NonNull Body getBody(Player player) {
+	public @NotNull Body getBody(Player player) {
 		Body body = Body.of("&7&l&m+----------------+");
 		body.addNewLine(HighlightingAnimation.of("Test Highlighted", ChatColor.GOLD, ChatColor.YELLOW));
 		body.addNewLine("&7&l&m+-----------------+");

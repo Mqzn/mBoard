@@ -1,7 +1,7 @@
 package dev.mqzen.boards.animation.core;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -46,7 +46,7 @@ public class ChangesSequence<T> implements Iterable<T> {
 		return new ChangesSequence<>(changes);
 	}
 
-	@NonNull
+	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		return changes.iterator();

@@ -1,7 +1,7 @@
 package dev.mqzen.boards.animation;
 
 import org.bukkit.ChatColor;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public final class Scroller {
 		}
 	}
 
-	public static @NonNull Scroller of(String message, int width, int spaceBetween) {
+	public static @NotNull Scroller of(String message, int width, int spaceBetween) {
 		return new Scroller(message, width, spaceBetween);
 	}
 

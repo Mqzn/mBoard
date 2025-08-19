@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 
-/**
- * @Author <a href="https://github.com/Cobeine">Cobeine</a>
- */
-
 public interface Line<T> {
     T getContent();
 

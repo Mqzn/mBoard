@@ -7,14 +7,12 @@ import net.md_5.bungee.api.ChatColor;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * @Author Mqzen
- * @Author <a href="https://github.com/Cobeine">Cobeine</a>
- */
 
 public interface Body<T> {
     
     void addLine(T content);
+    
+    void addLine(Line<T> line);
     
     List<Line<T>> getLines();
 
@@ -62,6 +60,11 @@ public interface Body<T> {
                 int lastIndex = getLines().size();
                 getLines().add(Line.legacy(ChatColor.translateAlternateColorCodes('&',content), lastIndex));
             }
+            
+            @Override
+            public void addLine(Line<String> line) {
+                getLines().add(line);
+            }
         }
         public static class AdventureBody extends BodyImplementation<Component>{
 
@@ -76,6 +79,11 @@ public interface Body<T> {
             public void addLine(Component content) {
                 int lastIndex = getLines().size();
                 getLines().add(Line.adventure(content, lastIndex));
+            }
+            
+            @Override
+            public void addLine(Line<Component> line) {
+                getLines().add(line);
             }
         }
     }

@@ -3,10 +3,10 @@ package dev.mqzen.boards.base;
 import dev.mqzen.boards.entity.Body;
 import dev.mqzen.boards.entity.Title;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface BoardAdapter {
+public interface BoardAdapter<T> {
 
 
 	/**
@@ -16,8 +16,8 @@ public interface BoardAdapter {
 	 * @param player the player who will view the title
 	 * @return the title of the scoreboard
 	 */
-	@NonNull
-	Title<?> title(Player player);
+	@NotNull
+	Title<T> title(Player player);
 
 	/**
 	 * Gets the body to be represented
@@ -28,8 +28,8 @@ public interface BoardAdapter {
 	 * @param player the player who will view the lines
 	 * @return the body of the scoreboard
 	 */
-	@NonNull
-	Body<?> getBody(Player player);
+	@NotNull
+	Body<T> getBody(Player player);
 
 	/**
 	 * Returns an update action if
@@ -45,7 +45,8 @@ public interface BoardAdapter {
 	 *
 	 * @return the actions to be executed as an update to the board
 	 */
-	@Nullable default BoardUpdate getBoardUpdate() {
+	@Nullable
+	default BoardUpdate getBoardUpdate() {
 		return BoardBase::update;
 	}
 

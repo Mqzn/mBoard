@@ -3,10 +3,10 @@ package dev.mqzen.boards.animation;
 import dev.mqzen.boards.animation.core.Animation;
 import dev.mqzen.boards.animation.core.ChangesSequence;
 import org.bukkit.ChatColor;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public final class ScrollAnimation extends Animation<String> {
-	private final @NonNull Scroller scroller;
+	private final @NotNull Scroller scroller;
 
 	private ScrollAnimation(String original, int width, int spaceBetween) {
 		super(original, ChangesSequence.of());
