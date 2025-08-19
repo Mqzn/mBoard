@@ -5,40 +5,151 @@ plugins {
 
 group 'dev.mqzen.board'
 version '2.0.0'
+// Configure Java 17 for compilation but target Java 8 for compatibility
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    // Generate sources and javadoc jars
+    withSourcesJar()
+    withJavadocJar()
+}
 
+// Compiler options - Compile with Java 17 but target Java 8 bytecode for compatibility
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    // Target Java 8 for maximum compatibility with older MC versions
+    // Change to 17 if you only support modern MC versions (1.17+)
+    options.release = 8
+
+    options.compilerArgs << '-parameters'
+}
 
 repositories {
     mavenCentral()
     mavenLocal()
+
+    // Spigot/Bukkit repositories
     maven {
+        name = 'spigotmc-repo'
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url  'https://oss.sonatype.org/content/repositories/central' }
-    maven { url "https://repo.dmulloy2.net/repository/public/" }
-    maven { url "https://jitpack.io" }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        name = 'sonatype-central'
+        url = 'https://oss.sonatype.org/content/repositories/central'
+    }
 
+    // Additional repositories
+    maven {
+        name = 'dmulloy2-repo'
+        url = "https://repo.dmulloy2.net/repository/public/"
+    }
+    maven {
+        name = 'jitpack'
+        url = "https://jitpack.io"
+    }
+
+    // Paper repository (for modern Paper API if needed)
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
 
     gradlePluginPortal()
 }
 
 dependencies {
-
+    // Keep 1.8.8 for maximum compatibility
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
 
-    compileOnly('org.projectlombok:lombok:1.18.24')
-    annotationProcessor('org.projectlombok:lombok:1.18.24')
+    // Lombok - Latest version
+    compileOnly('org.projectlombok:lombok:1.18.34')
+    annotationProcessor('org.projectlombok:lombok:1.18.34')
 
-    compileOnly( 'org.jetbrains:annotations:24.0.1' )
-    annotationProcessor('org.jetbrains:annotations:24.0.1')
+    // Annotations - Latest version
+    compileOnly('org.jetbrains:annotations:26.0.1')
+    annotationProcessor('org.jetbrains:annotations:26.0.1')
 
-    compileOnly("net.kyori:adventure-platform-bukkit:4.3.2")
-    compileOnly ("net.kyori:adventure-api:4.16.0")
-
+    // Adventure API - Latest versions
+    compileOnly("net.kyori:adventure-platform-bukkit:4.3.4")
+    compileOnly("net.kyori:adventure-api:4.17.0")
+    compileOnly("net.kyori:adventure-text-minimessage:4.17.0")
+    compileOnly("net.kyori:adventure-text-serializer-legacy:4.17.0")
 }
 
+// Shadow JAR configuration - Version 8.x syntax
 shadowJar {
-    archiveBaseName.set("mBoard-${project.version}" + ".jar")
-    //destinationDirectory.set(file("D:\\minecraft-dev\\servers\\paper-1.20\\plugins"))
+    archiveBaseName.set("mBoard")
+    archiveClassifier.set("")
+    archiveVersion.set("${project.version}")
+
+    // Minimize JAR size (be careful with reflection)
+    minimize {
+        // Exclude classes that might be accessed via reflection
+        exclude(dependency('org.spigotmc:.*'))
+    }
+
+    // Merge service files
+    mergeServiceFiles()
+
+    // Set the output directory (uncomment and modify as needed)
+    // destinationDirectory.set(file("D:\\minecraft-dev\\servers\\paper-1.20\\plugins"))
 }
 
+// Build task configuration
+tasks.build {
+    dependsOn shadowJar
+}
+
+// Test configuration for Java 17
+test {
+    useJUnitPlatform()
+
+    // JVM args for testing if needed (Java 9+)
+    if (JavaVersion.current().isJava9Compatible()) {
+        jvmArgs = [
+                '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+                '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+        ]
+    }
+}
+
+// Javadoc configuration for Java 17
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
+    // Set source compatibility for javadoc
+    options.source = '8'
+
+    // Exclude implementation packages from javadoc
+    exclude '**/impl/**'
+    exclude '**/internal/**'
+}
+
+// Clean task enhancement
+clean {
+    delete "$projectDir/out"
+    delete "$projectDir/bin"
+}
+
+// Task to display Java version info
+tasks.register('javaVersion') {
+    doLast {
+        println "===================="
+        println "Java Configuration:"
+        println "===================="
+        println "Toolchain: Java ${java.toolchain.languageVersion.get()}"
+        println "Target: Java ${tasks.compileJava.options.release.get()}"
+        println "Current JVM: ${JavaVersion.current()}"
+        println "Shadow Plugin: 8.3.3 (stable)"
+        println "===================="
+    }
+}

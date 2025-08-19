@@ -1,5 +1,7 @@
 package dev.mqzen.boards.entity;
 
+import dev.mqzen.boards.animation.HighlightingAnimation;
+import dev.mqzen.boards.animation.ScrollAnimation;
 import dev.mqzen.boards.animation.core.Animation;
 import dev.mqzen.boards.base.BoardAdapter;
 import lombok.Setter;
@@ -69,7 +71,7 @@ public interface Title<T> {
 	
 	@Setter
 	class TitleImplementation<T> implements Title<T>{
-		private T content;
+		protected T content;
 		private Animation<T> titleAnimation;
 		public TitleImplementation() {
 		
@@ -86,6 +88,8 @@ public interface Title<T> {
 			}
 			return Optional.of(content);
 		}
+		
+		
 		
 		@Override @SuppressWarnings("unchecked")
 		public <TITLE extends Title<T>> TITLE withAnimation(@Nullable Animation<T> animation) {
@@ -112,6 +116,14 @@ public interface Title<T> {
 			public LegacyTitle ofText(String content) {
 				super.setContent(ChatColor.translateAlternateColorCodes('&', content));
 				return this;
+			}
+			
+			public LegacyTitle withScroll(int width, int spaceBetween) {
+				return super.withAnimation(ScrollAnimation.of(this.content, width, spaceBetween));
+			}
+			
+			public LegacyTitle withHighlight(org.bukkit.ChatColor primaryColor, org.bukkit.ChatColor secondaryColor) {
+				return super.withAnimation(HighlightingAnimation.of(this.content, primaryColor, secondaryColor));
 			}
 		}
 		public static class AdventureTitle extends TitleImplementation<Component> {

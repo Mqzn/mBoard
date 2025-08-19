@@ -109,7 +109,7 @@ public class AdventureBoard extends BoardBase<Component> {
     public boolean update() {
         try {
             // Get new title and body from adapter (for dynamic content)
-            Title<Component> newTitle = adapter.title(getPlayer());
+            Title<Component> newTitle = adapter.getTitle(getPlayer());
             
             // Handle title animation caching
             if (newTitle.loadAnimation().isPresent()) {
@@ -127,7 +127,7 @@ public class AdventureBoard extends BoardBase<Component> {
             }
             
             // Update title with preserved animation state
-            updateTitle(newTitle.get().orElseThrow());
+            updateTitle(newTitle.get().orElseThrow(IllegalStateException::new));
             
             // Handle body/lines with animation caching
             for (Line<Component> line : adapter.getBody(getPlayer()).getLines()) {
@@ -168,7 +168,7 @@ public class AdventureBoard extends BoardBase<Component> {
             for (Line<?> line : adapter.getBody(getPlayer()).getLines()) {
                 updateLine(line.getIndex(), deserialize(line.fetchContent()));
             }
-            updateTitle(deserialize(adapter.title(getPlayer()).get().orElseThrow()));
+            updateTitle(deserialize(adapter.getTitle(getPlayer()).get().orElseThrow(IllegalStateException::new)));
             return false;
         }
     }

@@ -17,7 +17,7 @@ public interface BoardAdapter<T> {
 	 * @return the title of the scoreboard
 	 */
 	@NotNull
-	Title<T> title(Player player);
+	Title<T> getTitle(Player player);
 
 	/**
 	 * Gets the body to be represented

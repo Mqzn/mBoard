@@ -126,9 +126,10 @@ public final class BoardManager {
 		
 		BoardBase<?> board;
         if (ADVENTURE_SUPPORT) {
-			if (!(adapter instanceof ModernBoardAdapter modernBoardAdapter)) {
+			if (!(adapter instanceof ModernBoardAdapter)) {
 				throw new IllegalStateException("You cannot use legacy board adapter in a modern mc version !");
 			}
+			ModernBoardAdapter modernBoardAdapter = (ModernBoardAdapter)adapter;
             board = new AdventureBoard(player, modernBoardAdapter);
         } else {
             board = new LegacyBoard(player, (LegacyBoardAdapter) adapter);

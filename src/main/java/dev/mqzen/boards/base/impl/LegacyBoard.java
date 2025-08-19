@@ -146,7 +146,7 @@ public class LegacyBoard extends BoardBase<String> {
     @Override
     public boolean update() {
         // Get new title and body from adapter (for dynamic content)
-        Title<String> newTitle = adapter.title(getPlayer());
+        Title<String> newTitle = adapter.getTitle(getPlayer());
         
         // Handle title animation caching
         if (newTitle.loadAnimation().isPresent()) {
@@ -164,7 +164,7 @@ public class LegacyBoard extends BoardBase<String> {
         }
         
         // Update title with preserved animation state
-        updateTitle(newTitle.get().orElseThrow());
+        updateTitle(newTitle.get().orElseThrow(IllegalStateException::new));
         
         // Handle body/lines with animation caching
         for (Line<String> line : adapter.getBody(getPlayer()).getLines()) {

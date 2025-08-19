@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,7 +25,7 @@ public interface Body<T> {
     }
     
     static BodyImplementation.LegacyBody legacy(String... lines) {
-        return legacy(List.of(lines));
+        return legacy(Arrays.asList(lines));
     }
     
     static BodyImplementation.LegacyBody legacy(List<String> lines) {
@@ -33,7 +34,7 @@ public interface Body<T> {
     
     
     static BodyImplementation.AdventureBody adventure(Component... components) {
-        return adventure(List.of(components));
+        return adventure(Arrays.asList(components));
     }
     
     static BodyImplementation.AdventureBody adventure(List<Component> components) {

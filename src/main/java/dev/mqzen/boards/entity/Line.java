@@ -116,7 +116,7 @@ public interface Line<T> {
             // Create animation and convert back
             Animation<String> legacyAnim = HighlightingAnimation.of(legacy, primary, secondary);
             
-            this.animation = new Animation<>(this.content) {
+            this.animation = new Animation<Component>(this.content) {
                 @Override
                 public Component fetchNextChange() {
                     String animatedLegacy = legacyAnim.fetchNextChange();
@@ -135,7 +135,7 @@ public interface Line<T> {
                     .legacySection().serialize(this.content);
             Animation<String> legacyAnim = ScrollAnimation.of(legacy, width, spaceBetween);
             
-            this.animation = new Animation<>(this.content) {
+            this.animation = new Animation<Component>(this.content) {
                 @Override
                 public Component fetchNextChange() {
                     String animatedLegacy = legacyAnim.fetchNextChange();
