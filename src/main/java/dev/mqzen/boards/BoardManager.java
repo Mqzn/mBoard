@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -159,7 +160,7 @@ public final class BoardManager {
 	 * @see BoardManager#setUpdateInterval(long)
 	 */
 	public void startBoardUpdaters() {
-		updateTaskId = Bukkit.getScheduler().runTaskTimer(plugin, ()-> {
+		updateTaskId = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, ()-> {
 			for(BoardBase<?> board : boards.values()) {
 				if(board.isDeleted())continue;
 				BoardUpdate update = board.getUpdate();
@@ -167,7 +168,7 @@ public final class BoardManager {
 				try {
 					update.update(board);
 				}catch (Exception ex) {
-					ex.printStackTrace();
+					plugin.getLogger().log(Level.SEVERE, ex, ()-> "Failed to update " + board.getPlayer().getName() + "'s scoreboard.");
 				}
 			}
 		}, 1L, updateInterval).getTaskId();
