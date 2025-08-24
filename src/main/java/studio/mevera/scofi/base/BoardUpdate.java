@@ -1,4 +1,4 @@
-package dev.mqzen.boards.base;
+package studio.mevera.scofi.base;
 
 @FunctionalInterface
 public interface BoardUpdate  {

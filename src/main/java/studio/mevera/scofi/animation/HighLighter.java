@@ -1,4 +1,4 @@
-package dev.mqzen.boards.animation;
+package studio.mevera.scofi.animation;
 
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +34,7 @@ public final class HighLighter {
 		}
 
 		if (position > 0) {
-			builder.append(primaryColor).append(text.substring(0, position));
+			builder.append(primaryColor).append(text, 0, position);
 		}
 		String secondaryTarget = text.substring(position, position + 1);
 		builder.append(secondaryColor).append(secondaryTarget);

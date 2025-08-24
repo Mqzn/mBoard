@@ -1,9 +1,9 @@
-package dev.mqzen.boards;
+package studio.mevera.scofi;
 
-import dev.mqzen.boards.base.*;
-import dev.mqzen.boards.base.impl.LegacyBoard;
-import dev.mqzen.boards.base.impl.AdventureBoard;
-import dev.mqzen.boards.util.FastReflection;
+import studio.mevera.scofi.base.*;
+import studio.mevera.scofi.base.impl.LegacyBoard;
+import studio.mevera.scofi.base.impl.AdventureBoard;
+import studio.mevera.scofi.util.FastReflection;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * @since 1.0
  * @author Mqzen (aka Mqzn)
  */
-public final class BoardManager {
+public class Scofi {
 
 	private final @NotNull Plugin plugin;
 	private @Nullable Integer updateTaskId = null;
@@ -38,40 +38,22 @@ public final class BoardManager {
 	}
 
 	private @Getter long updateInterval = 3L; // in ticks
-	private BoardManager(@NotNull Plugin plugin) {
+	private Scofi(@NotNull Plugin plugin) {
 		this.plugin = plugin;
 	}
 
-	private static @Nullable BoardManager instance;
 
 	/**
-	 * Loads the BoardManager instance into memory
+	 * Loads the Scofi instance into memory
 	 * since the class follows The Singleton pattern
 	 * there will be only copy of it's instance in memory
 	 *
 	 * @param plugin the plugin that's using mBoard
 	 */
-	public static void load(Plugin plugin) {
-		if(plugin == null) return;
-		instance = new BoardManager(plugin);
-	}
-
-	/**
-	 * Fetches the loaded instance of the BoardManager
-	 * if the instance hasn't been loaded yet by calling 'BoardManager.load(plugin)'
-	 * then it will throw an exception
-	 *
-	 * @throws IllegalStateException when the instance hasn't been loaded yet by calling 'BoardManager.load(plugin)'
-	 *
-	 * @return the instance loaded :D
-	 */
-
-	public static @NotNull BoardManager getInstance() {
-		if(instance == null)
-			throw new IllegalStateException("BoardManager instance is not initialized correctly," +
-							" please try calling the method BoardManager#load");
-
-		return instance;
+	public static Scofi load(Plugin plugin) {
+		if(plugin == null )
+			throw new IllegalArgumentException("Plugin cannot be null");
+		return new Scofi(plugin);
 	}
 
 	/**
@@ -131,9 +113,9 @@ public final class BoardManager {
 				throw new IllegalStateException("You cannot use legacy board adapter in a modern mc version !");
 			}
 			ModernBoardAdapter modernBoardAdapter = (ModernBoardAdapter)adapter;
-            board = new AdventureBoard(player, modernBoardAdapter);
+            board = new AdventureBoard(this, player, modernBoardAdapter);
         } else {
-            board = new LegacyBoard(player, (LegacyBoardAdapter) adapter);
+            board = new LegacyBoard(this, player, (LegacyBoardAdapter) adapter);
         }
 		
         registerBoard(player.getUniqueId(), board);
@@ -157,7 +139,7 @@ public final class BoardManager {
 	 * Start the task of the board updates
 	 * to allow boards to get updated every certain period
 	 *
-	 * @see BoardManager#setUpdateInterval(long)
+	 * @see Scofi#setUpdateInterval(long)
 	 */
 	public void startBoardUpdaters() {
 		updateTaskId = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, ()-> {
@@ -179,7 +161,7 @@ public final class BoardManager {
 	 * Seemed useless to me but thought perhaps someone
 	 * may get a use of it in the future lol
 	 *
-	 * @see BoardManager#startBoardUpdaters()
+	 * @see Scofi#startBoardUpdaters()
 	 */
 	public void stopBoardUpdaters() {
 		if(updateTaskId != null)
