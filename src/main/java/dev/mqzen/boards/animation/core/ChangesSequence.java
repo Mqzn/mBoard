@@ -1,4 +1,4 @@
-package studio.mevera.scofi.animation.core;
+package dev.mqzen.boards.animation.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

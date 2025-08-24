@@ -1,12 +1,10 @@
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '8.3.9'
-    id "com.vanniktech.maven.publish" version "0.33.0"
 }
 
-group 'studio.mevera'
+group 'dev.mqzen.board'
 version '2.0.0'
-
 // Configure Java 17 for compilation but target Java 8 for compatibility
 java {
     toolchain {
@@ -84,50 +82,9 @@ dependencies {
     compileOnly("net.kyori:adventure-text-serializer-legacy:4.17.0")
 }
 
-mavenPublishing {
-    coordinates(group as String, "scofi", version as String)
-
-    pom {
-        name = "Scofi"
-        description = "A modern customizable scoreboard library for spigot development."
-        inceptionYear = "2025"
-        url = "https://github.com/MeveraStudios/Scofi/"
-        licenses {
-            license {
-                name = 'MIT'
-                url = "https://opensource.org/licenses/MIT"
-                distribution = "https://mit-license.org/"
-            }
-        }
-        developers {
-            developer {
-                id = "mqzn"
-                name = "Mqzn"
-                url = "https://github.com/Mqzn/"
-            }
-        }
-        scm {
-            url = "https://github.com/MeveraStudios/Scofi/"
-            connection = "scm:git:git://github.com/MeveraStudios/Scofi.git"
-            developerConnection = "scm:git:ssh://git@github.com/MeveraStudios/Scofi.git"
-        }
-    }
-
-    if (
-            !gradle.startParameter.taskNames.any { (it == "publishToMavenLocal") }
-    ) {
-        publishToMavenCentral()
-        signAllPublications()
-    }
-
-    compileJava.options.encoding = "UTF-8"
-    compileJava.options.compilerArgs += ["-parameters"]
-}
-
-
 // Shadow JAR configuration - Version 8.x syntax
 shadowJar {
-    archiveBaseName.set("Scofi")
+    archiveBaseName.set("mBoard")
     archiveClassifier.set("")
     archiveVersion.set("${project.version}")
 
@@ -147,6 +104,19 @@ shadowJar {
 // Build task configuration
 tasks.build {
     dependsOn shadowJar
+}
+
+// Test configuration for Java 17
+test {
+    useJUnitPlatform()
+
+    // JVM args for testing if needed (Java 9+)
+    if (JavaVersion.current().isJava9Compatible()) {
+        jvmArgs = [
+                '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+                '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+        ]
+    }
 }
 
 // Javadoc configuration for Java 17
@@ -179,7 +149,7 @@ tasks.register('javaVersion') {
         println "Toolchain: Java ${java.toolchain.languageVersion.get()}"
         println "Target: Java ${tasks.compileJava.options.release.get()}"
         println "Current JVM: ${JavaVersion.current()}"
-        println "Shadow Plugin: 8.3.9 (stable)"
+        println "Shadow Plugin: 8.3.3 (stable)"
         println "===================="
     }
 }

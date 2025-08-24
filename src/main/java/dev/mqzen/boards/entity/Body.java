@@ -1,4 +1,4 @@
-package studio.mevera.scofi.entity;
+package dev.mqzen.boards.entity;
 
 import lombok.Getter;
 import net.kyori.adventure.text.Component;

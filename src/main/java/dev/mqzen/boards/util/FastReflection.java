@@ -1,4 +1,4 @@
-package studio.mevera.scofi.util;
+package dev.mqzen.boards.util;
 
 import org.bukkit.Bukkit;
 

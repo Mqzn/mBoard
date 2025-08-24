@@ -1,7 +1,7 @@
-package studio.mevera.scofi.base;
+package dev.mqzen.boards.base;
 
-import studio.mevera.scofi.entity.Body;
-import studio.mevera.scofi.entity.Title;
+import dev.mqzen.boards.entity.Body;
+import dev.mqzen.boards.entity.Title;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

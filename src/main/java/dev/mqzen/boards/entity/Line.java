@@ -1,8 +1,8 @@
-package studio.mevera.scofi.entity;
+package dev.mqzen.boards.entity;
 
-import studio.mevera.scofi.animation.HighlightingAnimation;
-import studio.mevera.scofi.animation.ScrollAnimation;
-import studio.mevera.scofi.animation.core.Animation;
+import dev.mqzen.boards.animation.HighlightingAnimation;
+import dev.mqzen.boards.animation.ScrollAnimation;
+import dev.mqzen.boards.animation.core.Animation;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;

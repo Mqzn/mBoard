@@ -1,6 +1,6 @@
-package studio.mevera.scofi.animation;
+package dev.mqzen.boards.animation;
 
-import studio.mevera.scofi.animation.core.Animation;
+import dev.mqzen.boards.animation.core.Animation;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,13 +1,13 @@
-package studio.mevera.scofi.base.impl;
+package dev.mqzen.boards.base.impl;
 
-import studio.mevera.scofi.Scofi;
-import studio.mevera.scofi.animation.core.Animation;
-import studio.mevera.scofi.base.BoardBase;
-import studio.mevera.scofi.base.BoardUpdate;
-import studio.mevera.scofi.base.ModernBoardAdapter;
-import studio.mevera.scofi.entity.Line;
-import studio.mevera.scofi.entity.Title;
-import studio.mevera.scofi.util.FastReflection;
+import dev.mqzen.boards.BoardManager;
+import dev.mqzen.boards.animation.core.Animation;
+import dev.mqzen.boards.base.BoardBase;
+import dev.mqzen.boards.base.BoardUpdate;
+import dev.mqzen.boards.base.ModernBoardAdapter;
+import dev.mqzen.boards.entity.Line;
+import dev.mqzen.boards.entity.Title;
+import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static studio.mevera.scofi.Scofi.ADVENTURE_SUPPORT;
+import static dev.mqzen.boards.BoardManager.ADVENTURE_SUPPORT;
 
 
 @Getter
@@ -56,12 +56,12 @@ public class AdventureBoard extends BoardBase<Component> {
     private Animation<Component> cachedTitleAnimation;
     private final Map<Integer, Animation<Component>> cachedLineAnimations = new HashMap<>();
     
-    public AdventureBoard(Scofi scofi, Player player, ModernBoardAdapter adapter) {
-        super(scofi, player);
+    public AdventureBoard(Player player, ModernBoardAdapter adapter) {
+        super(player);
         this.adapter = adapter;
         
         if (!update()) {
-            scofi.getLogger().warning("Hey! Looks like you're using legacy text for your board instead of components," +
+            BoardManager.getInstance().getLogger().warning("Hey! Looks like you're using legacy text for your board instead of components," +
                     " legacy text has been automatically converted for now. It is better that you use kyori adventure for modern minecraft.");
         }
     }

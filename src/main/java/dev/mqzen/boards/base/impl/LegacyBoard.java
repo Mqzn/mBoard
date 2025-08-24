@@ -1,13 +1,12 @@
-package studio.mevera.scofi.base.impl;
+package dev.mqzen.boards.base.impl;
 
-import studio.mevera.scofi.Scofi;
-import studio.mevera.scofi.animation.core.Animation;
-import studio.mevera.scofi.base.BoardBase;
-import studio.mevera.scofi.base.BoardUpdate;
-import studio.mevera.scofi.base.LegacyBoardAdapter;
-import studio.mevera.scofi.entity.Line;
-import studio.mevera.scofi.entity.Title;
-import studio.mevera.scofi.util.FastReflection;
+import dev.mqzen.boards.animation.core.Animation;
+import dev.mqzen.boards.base.BoardBase;
+import dev.mqzen.boards.base.BoardUpdate;
+import dev.mqzen.boards.base.LegacyBoardAdapter;
+import dev.mqzen.boards.entity.Line;
+import dev.mqzen.boards.entity.Title;
+import dev.mqzen.boards.util.FastReflection;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -45,8 +44,8 @@ public class LegacyBoard extends BoardBase<String> {
     private Animation<String> cachedTitleAnimation;
     private final Map<Integer, Animation<String>> cachedLineAnimations = new HashMap<>();
     
-    public LegacyBoard(Scofi scofi, Player player, LegacyBoardAdapter adapter) {
-        super(scofi, player);
+    public LegacyBoard(Player player, LegacyBoardAdapter adapter) {
+        super(player);
         this.adapter = adapter;
         update();
     }
