@@ -1,6 +1,7 @@
-package dev.mqzen.boards.base;
+package studio.mevera.scofi.base;
 
-import dev.mqzen.boards.util.FastReflection;
+import studio.mevera.scofi.Scofi;
+import studio.mevera.scofi.util.FastReflection;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
@@ -189,7 +190,7 @@ public abstract class BoardBase<T> {
             throw new ExceptionInInitializerError(t);
         }
     }
-
+    
     /**
      * -- GETTER --
      *  Get the player who has the scoreboard.
@@ -232,7 +233,7 @@ public abstract class BoardBase<T> {
      *
      * @param player the owner of the scoreboard
      */
-    protected BoardBase(Player player) {
+    protected BoardBase(Scofi scofi, Player player) {
         this.player = Objects.requireNonNull(player, "player");
         this.id = "fb-" + Integer.toHexString(ThreadLocalRandom.current().nextInt());
 

@@ -1,4 +1,4 @@
-package dev.mqzen.boards.animation.core;
+package studio.mevera.scofi.animation.core;
 
 import lombok.Getter;
 

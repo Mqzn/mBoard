@@ -1,9 +1,9 @@
-package dev.mqzen.boards.entity;
+package studio.mevera.scofi.entity;
 
-import dev.mqzen.boards.animation.HighlightingAnimation;
-import dev.mqzen.boards.animation.ScrollAnimation;
-import dev.mqzen.boards.animation.core.Animation;
-import dev.mqzen.boards.base.BoardAdapter;
+import studio.mevera.scofi.animation.HighlightingAnimation;
+import studio.mevera.scofi.animation.ScrollAnimation;
+import studio.mevera.scofi.animation.core.Animation;
+import studio.mevera.scofi.base.BoardAdapter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
